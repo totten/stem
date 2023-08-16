@@ -1,0 +1,4 @@
+/.loco/var
+/env.local.yml
+/web/
+!/web/.placeholder

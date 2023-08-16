@@ -1,0 +1,88 @@
+format: 'loco-0.1'
+
+## This is the default configuration used for local development environments.
+
+#### General configuration
+default_environment:
+
+  ## LOCALHOST: Define the local IP address that we should bind to.
+  - LOCALHOST=127.0.0.1
+
+  ## Configure web service
+  - HTTPD_DOMAIN=civicrm.$LOCALHOST.nip.io
+  - HTTPD_PORT=8000
+  - HTTPD_VISIBILITY=all
+  # - HTTPD_VDROOT=$LOCO_PRJ/build
+
+  ## Configure other daemons. Most run on auxiliary/non-standard ports.
+  - MYSQLD_PORT=5501
+  - PHPFPM_PORT=5502
+  - MAIL_SMTP_PORT=5503
+  - MAIL_HTTP_PORT=5504
+
+  ## XDEBUG_*: Enable or disable main XDebug options
+  #- XDEBUG_MODE=off
+  - XDEBUG_MODE=develop,debug
+  - XDEBUG_PORT=9003
+  #- XDEBUG_CONFIG=...
+
+  ## CIVICRM_LOCALES: When pre-generating CiviCRM datasets, limit the number of locales.
+  - CIVICRM_LOCALES=en_US,fr_FR,de_DE
+
+  ## CIVIBUILD_ADMIN_PASS: When creating an administrative user, set the default password.
+  # - CIVIBUILD_ADMIN_PASS=admin
+
+#### Mandatory environment settings
+environment:
+  # CLI applications should use our stuff
+  # - CIVIBUILD_HOME=$HTTPD_VDROOT
+  - MYSQL_HOME=$LOCO_VAR/mysql/conf
+  - PATH=$LOCO_PRJ/.loco/bin:$PATH
+  # - CIVICRM_COMPOSER_ASSET=symdir
+
+volume:
+  ## Store service data (such as MySQL files) in ramdisk
+  # ramdisk: 600
+
+#### Functional service definitions
+services:
+
+  php-fpm:
+    run: 'php-fpm -y "$LOCO_SVC_VAR/php-fpm.conf" --nodaemonize'
+    pid_file: '$LOCO_SVC_VAR/php-fpm.pid'
+    message: 'PHP-FPM is running on "<comment>$LOCALHOST:$PHPFPM_PORT</comment>"'
+
+  mailhog:
+    run: 'loco-pid-file "$LOCO_SVC_VAR/mailhog.pid" -- MailHog -ui-bind-addr "$LOCALHOST:$MAIL_HTTP_PORT" -api-bind-addr "$LOCALHOST:$MAIL_HTTP_PORT" -smtp-bind-addr "$LOCALHOST:$MAIL_SMTP_PORT"'
+    pid_file: '$LOCO_SVC_VAR/mailhog.pid'
+    message: 'Mailhog is running on "<comment>smtp://$LOCALHOST:$MAIL_SMTP_PORT</comment>" and "<comment>http://$LOCALHOST:$MAIL_HTTP_PORT</comment>"'
+
+  ## apache-vdr uses a "virtual document root" to host a wildcard domain;
+  ## Formula: "http://{SUBDOMAIN}.{HTTPD_DOMAIN}:{HTTPD_PORT}/" <==> "./build/{SUBDOMAIN}/"
+  ## Ex: "http://foobar.bknix:8001/" <==> "./build/foobar/"
+  apache-vdr:
+    init:
+      - cp "$LOCO_SVC_CFG"/conf/magic "$LOCO_SVC_CFG"/conf/mime.types "$LOCO_SVC_VAR/conf"
+      - mk-apache-links
+      - 'if [ ! -d "$HTTPD_VDROOT" ]; then mkdir "$HTTPD_VDROOT"; fi'
+    run: 'apachectl -d "$LOCO_SVC_VAR" -DFOREGROUND'
+    pid_file: '$LOCO_SVC_VAR/httpd.pid'
+    message: 'Apache HTTPD is running at "<comment>http://$LOCALHOST:$HTTPD_PORT</comment>" with content from "<comment>$HTTPD_VDROOT</comment>".'
+
+  mysql:
+    enabled: true
+    init:
+      - 'loco-mysql-init'
+    run: 'mysqld --defaults-file="$LOCO_SVC_VAR/conf/my.cnf" --datadir="$LOCO_SVC_VAR/data"'
+    pid_file: '$LOCO_SVC_VAR/run/mysql.pid'
+    message: |-
+      MySQL is running on "<comment>$LOCALHOST:$MYSQLD_PORT</comment>". The default credentials are user="<comment>root</comment>" and password="".
+        URL: <comment>mysql://root:@$LOCALHOST:$MYSQLD_PORT</comment>
+
+  ## Load timezone data into MySQL.
+  ## IMHO, it would make more sense to use `mysqld --init-file`... but it's futzy (across versions).
+  ## Many `mysql.com` versions have very limited syntax ("\n" handling). `mariadb` doesn't even seem to read the file...
+  mysql-tz:
+    init:
+      - 'loco-mysql-wait 300 && mysql_tzinfo_to_sql "$TZDIR" | mysql mysql'
+    message: 'MySQL has timezone data from "<comment>$TZDIR</comment>".'
