@@ -41,9 +41,12 @@
     echo "  skit create        Download and install CiviCRM"
     echo "  skit download      Download CiviCRM"
     echo "  skit install       Install CiviCRM (database and config files)"
+    echo "  skit reinstall     Drop and recreate CiviCRM data"
+    echo "  skit uninstall     Drop CiviCRM data"
     echo
     echo "[33mInteraction:[0m"
     echo "  skit shell         Open a shell"
+    echo "  skit sh            Open a shell"
     echo
     echo "[33mTIP:[0m"
     echo "  Skit is a thin wrapper for nix-shell and loco. If you need more functionality,"
@@ -58,15 +61,23 @@
       loco "$@"
       ;;
 
-    download|install|create)
-      echo "TODO: $ACTION"
+    download|install|create|uninstall)
+      SCRIPT="$SKIT_HOME/tools/skit/$ACTION.sh"
+      source "$SKIT_HOME/tools/skit/polyfill.sh"
+      source "$SCRIPT"
+      ;;
+
+    reinstall)
+      source "$SKIT_HOME/tools/skit/polyfill.sh"
+      source "$SKIT_HOME/tools/skit/uninstall.sh"
+      source "$SKIT_HOME/tools/skit/install.sh"
       ;;
       
     help)
       show_help
       ;;
 
-    shell)
+    shell|sh)
       echo >&2 "Already running in skit shell!"
       ;;
 

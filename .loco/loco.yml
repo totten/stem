@@ -29,8 +29,13 @@ default_environment:
   ## CIVICRM_LOCALES: When pre-generating CiviCRM datasets, limit the number of locales.
   - CIVICRM_LOCALES=en_US,fr_FR,de_DE
 
-  ## CIVIBUILD_ADMIN_PASS: When creating an administrative user, set the default password.
-  # - CIVIBUILD_ADMIN_PASS=admin
+  ## Default user
+  - ADMIN_USER=admin
+  - ADMIN_PASS=admin
+  - ADMIN_EMAIL=admin@example.com
+  - DEMO_USER=demo
+  - DEMO_PASS=demo
+  - DEMO_EMAIL=demo@example.com
 
 #### Mandatory environment settings
 environment:

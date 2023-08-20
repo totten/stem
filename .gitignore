@@ -1,4 +1,7 @@
 /.loco/var
+/civicrm.config.php.standalone
+/data
 /env.local.yml
+/tmp
 /web/
 !/web/.placeholder

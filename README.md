@@ -30,8 +30,8 @@ Requires the `nix` package manager, which is compatible with Linux, MacOS, and W
     git clone "https://FIXME" "$HOME/src/skit"
     ```
 
-* Review the new configuration (`env.yml`). You may need to customize the IP address, port numbers, etc. 
-  This is particularly true if you use Windows (WSL2) or other forms of virtualization.
+* Review the new configuration (`env.yml`). You may need to customize the IP address, port numbers, etc.
+  This is particularly so if you use Windows WSL2 or other forms of virtualization.
 
 * Start MySQL, PHP, Apache, etc.
 
@@ -47,3 +47,33 @@ Requires the `nix` package manager, which is compatible with Linux, MacOS, and W
     ```bash
     ./bin/skit create
     ```
+
+    After this, you should be able to login.
+
+* Interact with the shell
+
+    ```bash
+    ./bin/skit shell
+    ```
+
+## Appendix
+
+`skit` is a smaller wrapper for other commands.
+
+Some commands are simple aliases:
+
+| Skit Command    | Real Command   |
+| --              | --             |
+| `skit shell`    | `nix-shell`    |
+| `skit start`    | `loco start`   |
+| `skit stop`     | `loco stop`    |
+| `skit status`   | `loco status`  |
+| `skit clean`    | `loco clean`   |
+
+A few commands are work-a-likes:
+
+| Skit Command     | Comparable Command   |
+| --               | --             |
+| `skit create`    | `civibuild create NAME --type standalone-dev`   |
+| `skit download`  | `civibuild download NAME --type standalone-dev` |
+| `skit install`   | `civibuild install NAME --type standalone-dev`  |
