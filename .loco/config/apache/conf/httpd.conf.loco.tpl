@@ -103,9 +103,9 @@ Timeout 600
     ServerName {{HTTPD_DOMAIN}}
 
     UseCanonicalName    Off
-    VirtualDocumentRoot "{{HTTPD_VDROOT}}/%1/web"
+    DocumentRoot "{{HTTPD_ROOT}}"
 
-    <Directory "{{HTTPD_VDROOT}}">
+    <Directory "{{HTTPD_ROOT}}">
         Options All
         AllowOverride All
         <IfModule mod_authz_host.c>
