@@ -48,7 +48,8 @@ Requires the `nix` package manager, which is compatible with Linux, MacOS, and W
     ./bin/skit create
     ```
 
-    After this, you should be able to login.
+    After this, you will find CiviCRM source code in `./web/core`. You can login with the
+    hostname and administrator specified by `env.yml`.
 
 * Interact with the shell
 
