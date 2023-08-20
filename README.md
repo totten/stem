@@ -61,7 +61,11 @@ Requires the `nix` package manager, which is compatible with Linux, MacOS, and W
 
 This project uses `civicrm-buildkit.git`. You can identify or change the version by editing `buildkit.nix`.
 
-To update to the latest `civicrm-buildkit.git`, run `./tools/update.sh`.
+To update to the latest `civicrm-buildkit.git`, run:
+
+```bash
+./tools/update.sh
+```
 
 ## Appendix: Commands
 
