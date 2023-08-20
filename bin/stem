@@ -20,7 +20,12 @@
         exec nix-shell
         ;;
       *)
-        exec nix-shell --command "./bin/stem $@"
+        cmd=("./bin/stem" "$@")
+        cmd_string="${cmd[*]}"
+        escaped_cmd=$(printf "%q" "$cmd_string")
+        nix_shell_command="nix-shell --command $escaped_cmd"
+        eval "$nix_shell_command"
+        exit $?
         ;;
     esac
   fi
