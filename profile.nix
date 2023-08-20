@@ -1,7 +1,4 @@
-{ pkgs, buildkit }:
-
-pkgs.buildEnv {
-  name = "stem";
+{ pkgs, buildkit, isDocker ? false }:
 
   ## Define the packages that we want. This may use:
   ##
@@ -24,7 +21,7 @@ pkgs.buildEnv {
   ##
   ## Helper functions
   ##   (buildkit.funcs.fetchPhar { name = ...; url = ...; sha256 = ...; })
-  paths = buildkit.profiles.dfl ++ [
+  buildkit.profiles.dfl ++ [
     buildkit.pkgs.composer
     buildkit.pkgs.pogo
     buildkit.pkgs.loco
@@ -35,8 +32,11 @@ pkgs.buildEnv {
 
     pkgs.bash-completion
     pkgs.bashInteractive
-    pkgs.nano
     pkgs.gzip
-  ];
-
-}
+    
+  ] ++ (if !isDocker then [] else [
+    pkgs.nano
+    pkgs.joe
+    pkgs.ps
+    pkgs.su
+  ])
