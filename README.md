@@ -18,8 +18,7 @@ Requires the `nix` package manager, which is compatible with Linux, MacOS, and W
 * Enable support for pre-built binaries
 
     ```bash
-    nix-env -iA cachix -f https://cachix.org/api/v1/install
-    cachix use bknix
+    nix-env -iA cachix -f https://cachix.org/api/v1/install && cachix use bknix
     ```
 
     NOTE: This step is not strictly necessary. However, it will speed-up the process significantly.
@@ -75,11 +74,11 @@ Some commands are simple aliases:
 
 | Skit Command    | Real Command   |
 | --              | --             |
-| `stem shell`    | `nix-shell`    |
-| `stem start`    | `loco start`   |
-| `stem stop`     | `loco stop`    |
-| `stem status`   | `loco status`  |
-| `stem clean`    | `loco clean`   |
+| `stem shell`    | `cd $STEM_HOME && nix-shell`    |
+| `stem start`    | `cd $STEM_HOME && loco start`   |
+| `stem stop`     | `cd $STEM_HOME && loco stop`    |
+| `stem status`   | `cd $STEM_HOME && loco status`  |
+| `stem clean`    | `cd $STEM_HOME && loco clean`   |
 
 A few commands are work-a-likes:
 
