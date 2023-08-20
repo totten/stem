@@ -23,7 +23,7 @@ let
 in
 
   pkgs.mkShell {
-    nativeBuildInputs = buildkit.profiles.max ++ [
+    nativeBuildInputs = buildkit.profiles.dfl ++ [
 
       buildkit.pkgs.composer
       buildkit.pkgs.pogo
