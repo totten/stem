@@ -66,7 +66,13 @@
       loco "$@"
       ;;
 
-    download|install|create|uninstall)
+    create)
+      source "$STEM_HOME/tools/stem/polyfill.sh"
+      source "$STEM_HOME/tools/stem/download.sh"
+      source "$STEM_HOME/tools/stem/install.sh"
+      ;;
+
+    download|install|uninstall)
       SCRIPT="$STEM_HOME/tools/stem/$ACTION.sh"
       source "$STEM_HOME/tools/stem/polyfill.sh"
       source "$SCRIPT"
