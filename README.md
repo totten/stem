@@ -56,7 +56,13 @@ Requires the `nix` package manager, which is compatible with Linux, MacOS, and W
     ./bin/skit shell
     ```
 
-## Appendix
+## Appendix: Buildkit version
+
+This project uses `civicrm-buildkit.git`. You can identify or change the version by editing `buildkit.nix`.
+
+To update to the latest `civicrm-buildkit.git`, run `./tools/update.sh`.
+
+## Appendix: Commands
 
 `skit` is a smaller wrapper for other commands.
 

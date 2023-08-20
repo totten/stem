@@ -6,15 +6,7 @@
 
 let
 
-  buildkit = import (pkgs.fetchzip {
-    url = "https://github.com/civicrm/civicrm-buildkit/archive/04b338a52bbf0bdc21edafe564b875138c1db12c.tar.gz";
-    sha256 = "1r6m830lyv6xf0yxz392izhwlnbahhc7s4r71riyqryzkr6psfyd"; ## nix-prefetch-url $URL --type sha256 --unpack
-    ## TODO: See if we can track master without needing to lock-in revisions
-  });
-
-  ## If you're trying to patch buildkit at the sametime, then use a local copy:
-  # buildkit = import ((builtins.getEnv "HOME") + "/buildkit/default.nix");
-  # buildkit = import ((builtins.getEnv "HOME") + "/bknix/default.nix");
+  buildkit = (import ./buildkit.nix) { inherit pkgs; };
 
 in
 
@@ -36,6 +28,9 @@ in
   ##   buildkit.dists.v2205.composer
   ##   buildkit.dists.v2305.composer
   ##   buildkit.dists.v2305.php81
+  ##
+  ## Helper functions
+  ##   (buildkit.funcs.fetchPhar { name = ...; url = ...; sha256 = ...; })
 
   pkgs.mkShell {
     nativeBuildInputs = buildkit.profiles.dfl ++ [
