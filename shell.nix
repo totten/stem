@@ -6,11 +6,9 @@
 
 let
 
-  buildkit = import (pkgs.fetchFromGitHub {
-    owner = "civicrm";
-    repo = "civicrm-buildkit";
-    rev = "04b338a52bbf0bdc21edafe564b875138c1db12c";
-    sha256 = "sha256-zTt9TZ7fZ+xjDicTfRiEalnK4Y8ijd89cN1sT8FA1eQ=";
+  buildkit = import (pkgs.fetchzip {
+    url = "https://github.com/civicrm/civicrm-buildkit/archive/04b338a52bbf0bdc21edafe564b875138c1db12c.tar.gz";
+    sha256 = "1r6m830lyv6xf0yxz392izhwlnbahhc7s4r71riyqryzkr6psfyd"; ## nix-prefetch-url $URL --type sha256 --unpack
     ## TODO: See if we can track master without needing to lock-in revisions
   });
 
