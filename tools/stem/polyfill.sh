@@ -3,10 +3,10 @@
 ## Provide some of the important variables/functions from civibuild.*.sh
 
 CIVI_VERSION=${CIVI_VERSION:-master}
-WEB_ROOT="$SKIT_HOME"
-CMS_ROOT="$SKIT_HOME/web"
+WEB_ROOT="$STEM_HOME"
+CMS_ROOT="$STEM_HOME/web"
 CMS_URL="http://$HTTPD_DOMAIN:$HTTPD_PORT"
-SITE_CONFIG_DIR="$SKIT_HOME/tools/skit"
+SITE_CONFIG_DIR="$STEM_HOME/tools/stem"
 
 CIVI_DB_DSN="mysql://root:@${LOCALHOST}:${MYSQLD_PORT}/civicrm?new_link=true"
 TEST_DB_DSN="mysql://root:@${LOCALHOST}:${MYSQLD_PORT}/test?new_link=true"

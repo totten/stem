@@ -1,8 +1,8 @@
-# skit: CiviCRM Standalone + Buildkit
+# stem: CiviCRM Standalone + Buildkit
 
 Quickly spin-up an instance of CiviCRM. Based on buildkit.
 
-> Note: Unlike the full buildkit, `skit` only starts one site. It doesn't
+> Note: Unlike the full buildkit, `stem` only starts one site. It doesn't
 > provide full the range of `civibuild` options.
 
 ## Requirements
@@ -24,10 +24,10 @@ Requires the `nix` package manager, which is compatible with Linux, MacOS, and W
 
     NOTE: This step is not strictly necessary. However, it will speed-up the process significantly.
 
-* Download the `skit` project. Choose a storage folder like `$HOME/src/skit`.
+* Download the `stem` project. Choose a storage folder like `$HOME/src/stem`.
 
     ```bash
-    git clone "https://FIXME" "$HOME/src/skit"
+    git clone "https://FIXME" "$HOME/src/stem"
     ```
 
 * Review the new configuration (`env.yml`). You may need to customize the IP address, port numbers, etc.
@@ -36,16 +36,16 @@ Requires the `nix` package manager, which is compatible with Linux, MacOS, and W
 * Start MySQL, PHP, Apache, etc.
 
     ```bash
-    ./bin/skit start
+    ./bin/stem start
     ```
 
-    NOTE: If this is the first time using buildkit or skit, then it will download MySQL, PHP, Apache, etc.
-    These downloads are only used within `skit` -- they don't affect your main operating system.
+    NOTE: If this is the first time using buildkit or stem, then it will download MySQL, PHP, Apache, etc.
+    These downloads are only used within `stem` -- they don't affect your main operating system.
 
 * Create CiviCRM site
 
     ```bash
-    ./bin/skit create
+    ./bin/stem create
     ```
 
     After this, you will find CiviCRM source code in `./web/core`. You can login with the
@@ -54,7 +54,7 @@ Requires the `nix` package manager, which is compatible with Linux, MacOS, and W
 * Interact with the shell
 
     ```bash
-    ./bin/skit shell
+    ./bin/stem shell
     ```
 
 ## Appendix: Buildkit version
@@ -65,22 +65,22 @@ To update to the latest `civicrm-buildkit.git`, run `./tools/update.sh`.
 
 ## Appendix: Commands
 
-`skit` is a smaller wrapper for other commands.
+`stem` is a smaller wrapper for other commands.
 
 Some commands are simple aliases:
 
 | Skit Command    | Real Command   |
 | --              | --             |
-| `skit shell`    | `nix-shell`    |
-| `skit start`    | `loco start`   |
-| `skit stop`     | `loco stop`    |
-| `skit status`   | `loco status`  |
-| `skit clean`    | `loco clean`   |
+| `stem shell`    | `nix-shell`    |
+| `stem start`    | `loco start`   |
+| `stem stop`     | `loco stop`    |
+| `stem status`   | `loco status`  |
+| `stem clean`    | `loco clean`   |
 
 A few commands are work-a-likes:
 
 | Skit Command     | Comparable Command   |
 | --               | --             |
-| `skit create`    | `civibuild create NAME --type standalone-dev`   |
-| `skit download`  | `civibuild download NAME --type standalone-dev` |
-| `skit install`   | `civibuild install NAME --type standalone-dev`  |
+| `stem create`    | `civibuild create NAME --type standalone-dev`   |
+| `stem download`  | `civibuild download NAME --type standalone-dev` |
+| `stem install`   | `civibuild install NAME --type standalone-dev`  |

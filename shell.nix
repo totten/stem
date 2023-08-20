@@ -44,8 +44,8 @@ in
       pkgs.bash-completion
     ];
     shellHook = ''
-      export SKIT_HOME="$PWD"
-      export PATH="$SKIT_HOME/bin:$PATH"
+      export STEM_HOME="$PWD"
+      export PATH="$STEM_HOME/bin:$PATH"
       eval $(loco env --export)
       source ${pkgs.bash-completion}/etc/profile.d/bash_completion.sh
     '';

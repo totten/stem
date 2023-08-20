@@ -59,10 +59,10 @@ function applyOverrides(&$config, &$override) {
 }
 
 Loco::dispatcher()->addListener('loco.config.filter', function($e) {
-  $skitHome = dirname($e['file'], 2);
+  $stemHome = dirname($e['file'], 2);
   $files = [
-    $skitHome . DIRECTORY_SEPARATOR . 'env.yml',
-    $skitHome . DIRECTORY_SEPARATOR . 'env.local.yml',
+    $stemHome . DIRECTORY_SEPARATOR . 'env.yml',
+    $stemHome . DIRECTORY_SEPARATOR . 'env.local.yml',
   ];
   foreach ($files as $f) {
     if (file_exists($f)) {

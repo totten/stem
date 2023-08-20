@@ -11,45 +11,45 @@
   }
 
   ## Re-launch if nix-shell (if necessary). Ensure we're in home.
-  if [ -z "$SKIT_HOME" ]; then
+  if [ -z "$STEM_HOME" ]; then
     BINDIR=$(absdirname "$0")
-    SKIT_HOME=$(dirname "$BINDIR")
-    cd "$SKIT_HOME"
+    STEM_HOME=$(dirname "$BINDIR")
+    cd "$STEM_HOME"
     case "$ACTION" in
       shell)
         exec nix-shell
         ;;
       *)
-        exec nix-shell --command "./bin/skit $@"
+        exec nix-shell --command "./bin/stem $@"
         ;;
     esac
   fi
-  cd "$SKIT_HOME"
+  cd "$STEM_HOME"
 
   #################################################################################
   function show_help() {
     echo "[33mAbout:[0m"
-    echo "  skit will start and stop civicrm standalone"
+    echo "  stem will start and stop civicrm standalone"
     echo
     echo "[33mService Management (MySQL, PHP, etc):[0m"
-    echo "  skit start         Start services in background"
-    echo "  skit stop          Stop services in background"
-    echo "  skit status        Summarize the status of services"
-    echo "  skit clean         Stop services. Destoy any data from MySQL."
+    echo "  stem start         Start services in background"
+    echo "  stem stop          Stop services in background"
+    echo "  stem status        Summarize the status of services"
+    echo "  stem clean         Stop services. Destoy any data from MySQL."
     echo
     echo "[33mSite Management (CiviCRM) :[0m"
-    echo "  skit create        Download and install CiviCRM"
-    echo "  skit download      Download CiviCRM"
-    echo "  skit install       Install CiviCRM (database and config files)"
-    echo "  skit reinstall     Drop and recreate CiviCRM data"
-    echo "  skit uninstall     Drop CiviCRM data"
+    echo "  stem create        Download and install CiviCRM"
+    echo "  stem download      Download CiviCRM"
+    echo "  stem install       Install CiviCRM (database and config files)"
+    echo "  stem reinstall     Drop and recreate CiviCRM data"
+    echo "  stem uninstall     Drop CiviCRM data"
     echo
     echo "[33mInteraction:[0m"
-    echo "  skit shell         Open a shell"
-    echo "  skit sh            Open a shell"
+    echo "  stem shell         Open a shell"
+    echo "  stem sh            Open a shell"
     echo
     echo "[33mTIP:[0m"
-    echo "  Skit is a thin wrapper for nix-shell and loco. If you need more functionality,"
+    echo "  stem is a thin wrapper for nix-shell and loco. If you need more functionality,"
     echo "  consider using those tools directly."
   }
 
@@ -62,15 +62,15 @@
       ;;
 
     download|install|create|uninstall)
-      SCRIPT="$SKIT_HOME/tools/skit/$ACTION.sh"
-      source "$SKIT_HOME/tools/skit/polyfill.sh"
+      SCRIPT="$STEM_HOME/tools/stem/$ACTION.sh"
+      source "$STEM_HOME/tools/stem/polyfill.sh"
       source "$SCRIPT"
       ;;
 
     reinstall)
-      source "$SKIT_HOME/tools/skit/polyfill.sh"
-      source "$SKIT_HOME/tools/skit/uninstall.sh"
-      source "$SKIT_HOME/tools/skit/install.sh"
+      source "$STEM_HOME/tools/stem/polyfill.sh"
+      source "$STEM_HOME/tools/stem/uninstall.sh"
+      source "$STEM_HOME/tools/stem/install.sh"
       ;;
       
     help)
@@ -78,7 +78,7 @@
       ;;
 
     shell|sh)
-      echo >&2 "Already running in skit shell!"
+      echo >&2 "Already running in stem shell!"
       ;;
 
     *)
