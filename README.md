@@ -11,8 +11,8 @@ It requires the `nix` package manager, which is compatible with Linux, MacOS, an
 | -- | -- | -- |
 | 1<br/><br/> | Install `nix` package manager<br/><br/> | `sh <(curl -L https://nixos.org/nix/install)`<br/> (*[more options for Linux, macOS, WSL2](https://nixos.org/download)*)) |
 | 2 | Close and reopen your shell | |
-| 3<br/><br/> | Enable binary downloads <br/><br/> | `nix-env -iA cachix -f https://cachix.org/api/v1/install` <br/> `cachix use bknix` |
-| 4<br/><br/>   | Clone the project <br/><br/> | `git clone "https://FIXME"` <br/> `cd stem` |
+| 3<br/><br/> | Enable binary downloads <br/><br/> | `nix-env -iA cachix -f https://cachix.org/api/v1/install && cachix use bknix` |
+| 4<br/><br/>   | Clone the project <br/><br/> | `git clone https://github.com/totten/stem/` <br/> `cd stem` |
 | 5 | Review service options | `nano env.yml` |
 | 6<br/><br/> | Start services<br/> (*On first run, auto-download necessary files.*) | `./bin/stem start` <br/><br/> |
 | 7 | Install CiviCRM (*database and data files*) | `./bin/stem install` |
