@@ -2,20 +2,20 @@
 
 `stem` will spin-up a developmental instance of CiviCRM.
 
-`stem` is a lightweight edition of `civicrm-buildkit`. It (mostly) uses the same services and tools, but it only supports a subset of functionality.
+`stem` is a lightweight edition of [civicrm-buildkit](https://github.com/civicrm/civicrm-buildkit/). It (mostly) uses the same services and tools, but it only supports a subset of functionality.
 It requires the `nix` package manager, which is compatible with Linux, MacOS, and Windows-WSL2.
 
 ## Quick start
 
 | # | Step | Typical Commands |
 | -- | -- | -- |
-| 1.0 | Install `nix` package manager (*[more documentation](https://nixos.org/download)*) | `sh <(curl -L https://nixos.org/nix/install)` |
-| 1.1 | Close and reopen your shell | |
-| 1.2<br/><br/> | Enable binary downloads <br/><br/> | `nix-env -iA cachix -f https://cachix.org/api/v1/install` <br/> `cachix use bknix` |
-| 2.0<br/><br/>   | Clone the project <br/><br/> | `git clone "https://FIXME"` <br/> `cd stem` |
-| 3.0 | Review service options | `nano env.yml` |
-| 3.1<br/><br/> | Start services (*On first run, this will auto-download necessary files.*) | `./bin/stem start` <br/><br/> |
-| 4.0 | Install CiviCRM (*database and data files*) | `./bin/stem install` |
+| 1<br/><br/> | Install `nix` package manager<br/><br/> | `sh <(curl -L https://nixos.org/nix/install)`<br/> (*[more options for Linux, macOS, WSL2](https://nixos.org/download)*)) |
+| 2 | Close and reopen your shell | |
+| 3<br/><br/> | Enable binary downloads <br/><br/> | `nix-env -iA cachix -f https://cachix.org/api/v1/install` <br/> `cachix use bknix` |
+| 4<br/><br/>   | Clone the project <br/><br/> | `git clone "https://FIXME"` <br/> `cd stem` |
+| 5 | Review service options | `nano env.yml` |
+| 6<br/><br/> | Start services<br/> (*On first run, auto-download necessary files.*) | `./bin/stem start` <br/><br/> |
+| 7 | Install CiviCRM (*database and data files*) | `./bin/stem install` |
 
 This should ultimately display some key information, such as:
 
