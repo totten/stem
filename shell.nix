@@ -11,16 +11,16 @@
 let
 
   buildkit = (import ./nix/buildkit.nix) { inherit pkgs; };
-  basePkgs = buildkit.pins.v2305; ## Future: buildkit.pins.default
-  profile = (import ./nix/profile.nix) { inherit buildkit; pkgs = basePkgs; };
+  envPkgs = buildkit.pins.default;
+  profile = (import ./nix/profile.nix) { inherit buildkit; };
 
-  shell = basePkgs.mkShell {
+  shell = envPkgs.mkShell {
     name = "stem";
     buildInputs = profile;
     shellHook = ''
       export STEM_HOME="$PWD"
       eval $(loco env --export)
-      source ${basePkgs.bash-completion}/etc/profile.d/bash_completion.sh
+      source ${envPkgs.bash-completion}/etc/profile.d/bash_completion.sh
     '';
   };
 

@@ -1,4 +1,16 @@
-{ pkgs, buildkit, isDocker ? false }:
+{ buildkit, isDocker ? false }:
+
+let
+
+  pkgs = buildkit.pins.default;
+
+  dockerAddons = [
+    pkgs.nano
+    pkgs.joe
+    pkgs.ps
+  ];
+
+in
 
   ## Define the packages that we want. This may use:
   ##
@@ -21,6 +33,7 @@
   ##
   ## Helper functions
   ##   (buildkit.funcs.fetchPhar { name = ...; url = ...; sha256 = ...; })
+
   buildkit.profiles.dfl ++ [
     buildkit.pkgs.composer
     buildkit.pkgs.pogo
@@ -34,9 +47,4 @@
     pkgs.bashInteractive
     pkgs.gzip
     
-  ] ++ (if !isDocker then [] else [
-    pkgs.nano
-    pkgs.joe
-    pkgs.ps
-    pkgs.su
-  ])
+  ] ++ (if isDocker then dockerAddons else [])

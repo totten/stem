@@ -29,9 +29,9 @@
 let
 
   buildkit = (import ./buildkit.nix) { inherit pkgs; };
-  basePkgs = buildkit.pins.v2305; ## Future: buildkit.pins.default
-  profile = ((import ./profile.nix) { inherit buildkit; pkgs = basePkgs; isDocker = true; });
-  dockerTools = basePkgs.dockerTools;
+  envPkgs = buildkit.pins.v2305; ## Future: buildkit.pins.default
+  profile = ((import ./profile.nix) { inherit buildkit; isDocker = true; });
+  dockerTools = envPkgs.dockerTools;
 
   baseImg = dockerTools.buildImage {
     name = "stem-base";
@@ -45,7 +45,7 @@ let
     ];
     
     runAsRoot = ''
-      #!${pkgs.runtimeShell}
+      #!${envPkgs.runtimeShell}
       ${dockerTools.shadowSetup}
       groupadd -g 1000 stem
       useradd -u 1000 --home-dir /stem -g stem stem
@@ -56,7 +56,6 @@ let
     '';
 
   };
-
 
   runImg = dockerTools.streamLayeredImage {
     name = "stem";
@@ -69,7 +68,7 @@ let
       User = "1000:1000";
       Env = [ "STEM_HOME=/stem" "TZDIR=${buildkit.pkgs.tzdata}" ];
       WorkingDir = "/stem";
-      # Cmd = [ "${basePkgs.bashInteractive}/bin/bash" ];
+      # Cmd = [ "${envPkgs.bashInteractive}/bin/bash" ];
       Cmd = [ "${buildkit.pkgs.loco}/bin/loco" "shell" ];
       # Cmd = [ "${buildkit.pkgs.loco}/bin/loco" "run" ];
       ## 1. Need to test more with 'loco run'
