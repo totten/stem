@@ -1,28 +1,27 @@
 /**
- * Build a Docker image for the current profile
+ * Build a Docker image (with the packages from `profile.nix`).
  *
- * To build an image and load it into Docker, run:
+ * NOTE: `docker.nix` does not provide an optimal workflow for customization.
+ * Even with `streamLayerdImage`, it tends to involve hefty layers that will
+ * eat through disk. `shell.nix` is much more agreeable to iterative tweaking.
+ * `docker.nix` would be useful after customization -- for sharing prebuilt
+ * images.
  *
- * - Build and load the image file
- *   $(nix-build docker.nix) | docker load
+ * To build an image and load it into Docker, run these commands:
  *
- * - Start a container from this image
- *   docker run -v $(pwd):/stem -it stem:latest /bin/bash
+ * 1. Build and load the image file
+ *    $(nix-build docker.nix) | docker load
  *
- * Or do this all as one step:
+ * 2. Start a container from this image
+ *    docker run -v $(pwd):/stem -it stem:latest
  *
- *   $(nix-build docker.nix) | docker load && docker run -v $(pwd):/stem -it stem:latest /bin/bash
+ * Or do it all as one step:
  *
- * And you can enter the shell multiple times:
+ *   $(nix-build docker.nix) | docker load && docker run -v $(pwd):/stem -it stem:latest
  *
- *   docker exec -it XXX /bin/bash
+ * You can open additional shells into the same system:
  *
- * Within shell, you still need do some navigating
- *
- *   cd /stem && STEM_HOME=$PWD loco shell
- *
- * TODO: Make the default env+cmd more like ^^^
- * TODO: Maybe split the images into separate files/build steps - so to reuse the heavy one
+ *   docker exec -it XXX loco shell
  */
 
 { pkgs ? import <nixpkgs> {} }:
@@ -34,46 +33,6 @@ let
   profile = ((import ./profile.nix) { inherit buildkit; pkgs = basePkgs; isDocker = true; });
   dockerTools = basePkgs.dockerTools;
 
-/*
-  shell = basePkgs.mkShell {
-    name = "stem";
-    buildInputs = profile;
-    shellHook = ''
-      export STEM_HOME="$PWD"
-      export PATH="$STEM_HOME/bin:$PATH"
-      eval $(loco env --export)
-      source ${basePkgs.bash-completion}/etc/profile.d/bash_completion.sh
-    '';
-  };
-*/
-
-    nonRootShadowSetup = { user, uid, gid ? uid }: with pkgs; [
-      (
-      writeTextDir "etc/shadow" ''
-        root:!x:::::::
-        ${user}:!:::::::
-      ''
-      )
-      (
-      writeTextDir "etc/passwd" ''
-        root:x:0:0::/root:${runtimeShell}
-        ${user}:x:${toString uid}:${toString gid}::/home/${user}:
-      ''
-      )
-      (
-      writeTextDir "etc/group" ''
-        root:x:0:
-        ${user}:x:${toString gid}:
-      ''
-      )
-      (
-      writeTextDir "etc/gshadow" ''
-        root:x::
-        ${user}:x::
-      ''
-      )
-    ];
-
   baseImg = dockerTools.buildImage {
     name = "stem-base";
     tag = "latest";
@@ -83,52 +42,45 @@ let
       usrBinEnv
       binSh
       caCertificates
-      #fakeNss
     ];
     
     runAsRoot = ''
       #!${pkgs.runtimeShell}
       ${dockerTools.shadowSetup}
       groupadd -g 1000 stem
-      useradd -u 1000 -g stem stem
+      useradd -u 1000 --home-dir /stem -g stem stem
       mkdir /tmp
       chmod 1777 /tmp
+      mkdir /stem
+      chown 1000:1000 /stem
     '';
+
   };
 
-in dockerTools.streamLayeredImage {
 
-  name = "stem";
-  tag = "latest";
-  created = "now";
+  runImg = dockerTools.streamLayeredImage {
+    name = "stem";
+    tag = "latest";
+    created = "now";
+    fromImage = baseImg;
+    contents = profile;
 
-  fromImage = baseImg;
-#  fromImageName = null;
-#  fromImageTag = "latest";
-
-  contents = profile;
-
-#  contents = with dockerTools; [
-#    usrBinEnv
-#    binSh
-#    caCertificates
-#    #fakeNss
-#  # shell ];
-#  ] ++ profile;
-#  # ++ (nonRootShadowSetup {uid = 1000; user = "stem";});
-
-  config = {
-    Cmd = [ "${basePkgs.bashInteractive}/bin/bash" ];
-    User = "1000:1000";
+    config = {
+      User = "1000:1000";
+      Env = [ "STEM_HOME=/stem" "TZDIR=${buildkit.pkgs.tzdata}" ];
+      WorkingDir = "/stem";
+      # Cmd = [ "${basePkgs.bashInteractive}/bin/bash" ];
+      Cmd = [ "${buildkit.pkgs.loco}/bin/loco" "shell" ];
+      # Cmd = [ "${buildkit.pkgs.loco}/bin/loco" "run" ];
+      ## 1. Need to test more with 'loco run'
+      ## 2. Can we bake-in the volume list and port list?
+      ##    Easy if we just hard-code to match loco.yml defaults.
+      ##    Harder if we need to support customized `env.yml`.
+      ##    Worst case, I guess one could do a wrapper command
+      ##    ("stem docker start" ==> "docker run -it stem:latest -v FOO -p FOO")
+      ##    or maybe auto-gen a thin container (`Dockerfile` => `FROM stem:latest EXPOSE nnn`).
+      ##    In any case, needs to be tested.
+    };
   };
 
-/*
-  #enableFakechroot = true;
-*/
-/*
-  extraCommands = ''
-    #!${basePkgs.stdenv.shell}
-  '';
-*/
-
-}
+in runImg
