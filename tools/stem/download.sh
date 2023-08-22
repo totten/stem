@@ -18,4 +18,5 @@ popd
 
 pushd "$WEB_ROOT/web/core"
   composer install
+  ./tools/standalone/bin/scaffold "$WEB_ROOT"
 popd

@@ -62,7 +62,13 @@
   ## OK, we're in nix-shell.
   case "$ACTION" in
 
-    start|stop|status|clean)
+    start)
+      # ( source "$STEM_HOME/tools/stem/polyfill.sh" && source "$STEM_HOME/tools/stem/download.sh" )
+      ## It might be pretter to put `stem download` in `loco.yml`'s init steps
+      loco "$@"
+      ;;
+
+    stop|status|clean)
       loco "$@"
       ;;
 
