@@ -1,5 +1,6 @@
 /.loco/var
 /civicrm.config.php.standalone
 /env.local.yml
+/nix/result
 /result
 /tmp

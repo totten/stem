@@ -3,16 +3,16 @@
  *
  * To run this, simply call `nix-shell`.
  *
- * NOTE: The main substance is defined by `profile.nix`.
+ * SEE ALSO: ./nix/profile.nix
  */
 
 { pkgs ? import <nixpkgs> {} }:
 
 let
 
-  buildkit = (import ./buildkit.nix) { inherit pkgs; };
+  buildkit = (import ./nix/buildkit.nix) { inherit pkgs; };
   basePkgs = buildkit.pins.v2305; ## Future: buildkit.pins.default
-  profile = (import ./profile.nix) { inherit buildkit; pkgs = basePkgs; };
+  profile = (import ./nix/profile.nix) { inherit buildkit; pkgs = basePkgs; };
 
   shell = basePkgs.mkShell {
     name = "stem";

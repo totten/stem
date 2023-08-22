@@ -5,7 +5,7 @@
 
   set -e
 
-  if [ ! -f "buildkit.nix" ]; then
+  if [ ! -f "nix/buildkit.nix" ]; then
     echo >&2 "Must run in project root"
     exit 1
   fi
@@ -29,7 +29,7 @@
     echo "# buildkit = import ((builtins.getEnv \"HOME\") + \"/buildkit/default.nix\");"
     echo "# buildkit = import ((builtins.getEnv \"HOME\") + \"/bknix/default.nix\");"
   }
-  render_file > buildkit.nix
+  render_file > nix/buildkit.nix
 
   exit
 }

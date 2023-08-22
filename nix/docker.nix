@@ -10,14 +10,14 @@
  * To build an image and load it into Docker, run these commands:
  *
  * 1. Build and load the image file
- *    $(nix-build docker.nix) | docker load
+ *    $(nix-build nix/docker.nix) | docker load
  *
  * 2. Start a container from this image
  *    docker run -v $(pwd):/stem -it stem:latest
  *
  * Or do it all as one step:
  *
- *   $(nix-build docker.nix) | docker load && docker run -v $(pwd):/stem -it stem:latest
+ *   $(nix-build nix/docker.nix) | docker load && docker run -v $(pwd):/stem -it stem:latest
  *
  * You can open additional shells into the same system:
  *
