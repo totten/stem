@@ -8,5 +8,5 @@ import (pkgs.fetchzip {
 })
 
 ## Get a local copy of civicrm-buildkit. (Useful for developing patches.)
-# buildkit = import ((builtins.getEnv "HOME") + "/buildkit/default.nix");
-# buildkit = import ((builtins.getEnv "HOME") + "/bknix/default.nix");
+# import ((builtins.getEnv "HOME") + "/buildkit/default.nix")
+# import ((builtins.getEnv "HOME") + "/bknix/default.nix")
