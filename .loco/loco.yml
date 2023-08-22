@@ -42,7 +42,7 @@ environment:
   # CLI applications should use our stuff
   # - CIVIBUILD_HOME=$HTTPD_VDROOT
   - MYSQL_HOME=$LOCO_VAR/mysql/conf
-  - PATH=$LOCO_PRJ/.loco/bin:$PATH
+  - PATH=$LOCO_PRJ/.loco/bin:$STEM_HOME/bin:$PATH
   # - CIVICRM_COMPOSER_ASSET=symdir
 
 volume:

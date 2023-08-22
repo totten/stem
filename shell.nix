@@ -1,5 +1,9 @@
 /**
- * Inherit from buildkit's nix configuration. Add a few extra packages.
+ * Define a shell environment for working on CiviCRM.
+ *
+ * To run this, simply call `nix-shell`.
+ *
+ * NOTE: The main substance is defined by `profile.nix`.
  */
 
 { pkgs ? import <nixpkgs> {} }:
@@ -15,7 +19,6 @@ let
     buildInputs = profile;
     shellHook = ''
       export STEM_HOME="$PWD"
-      export PATH="$STEM_HOME/bin:$PATH"
       eval $(loco env --export)
       source ${basePkgs.bash-completion}/etc/profile.d/bash_completion.sh
     '';
