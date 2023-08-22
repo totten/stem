@@ -5,7 +5,7 @@
 `stem` is a lightweight edition of [civicrm-buildkit](https://github.com/civicrm/civicrm-buildkit/). It (mostly) uses the same services and tools, but it only supports a subset of functionality.
 It requires the `nix` package manager, which is compatible with Linux, MacOS, and Windows-WSL2.
 
-## Quick start
+## Getting started
 
 | # | Step | Typical Commands |
 | -- | -- | -- |
@@ -38,6 +38,11 @@ To access CLI tools (such as `cv` or `civix`), you may open a shell:
 ```
 ./bin/stem shell
 ```
+
+## Uninstall
+
+* Delete the `stem` folder
+* Run `nix-collect-garbage` to remove any automatic downloads
 
 ## Appendix: Buildkit version
 
