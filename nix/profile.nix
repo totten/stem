@@ -40,6 +40,7 @@ in
     buildkit.pkgs.loco
     buildkit.pkgs.phpunit8
     buildkit.pkgs.phpunit9
+    buildkit.pkgs.coworker
     buildkit.pkgs.cv
     buildkit.pkgs.civix
 
